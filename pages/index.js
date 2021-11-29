@@ -4,15 +4,12 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [username, setUsername] = useState("");
   const [data, setData] = useState();
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <Head>
-        <title>Create Next App</title>
+        <title>Twitter Statistics</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -23,7 +20,7 @@ export default function Home() {
             value={username}
             placeholder="username"
             onChange={(event) => {
-              console.log(event.target.value);
+
               setUsername(event.target.value);
             }}
           ></input>
@@ -31,9 +28,11 @@ export default function Home() {
             className="font-sans font-medium py-2 px-4 border rounded bg-indigo-600 text-white border-indigo-500 hover:bg-indigo-700"
             value="Submit"
             onClick={() => {
+              setLoading(true);
               fetch("http://localhost:8000/data/", { method: "POST", body: JSON.stringify({ username: username }) })
                 .then((response) => response.json())
-                .then(setData);
+                .then(setData)
+                .then(() => setLoading(false));
             }}
           >
             Submit
@@ -43,6 +42,7 @@ export default function Home() {
           {data && data['url'] && (
             <img src={data['url']} />
           )}
+          {loading && (<h1>Loading...</h1>)}
         </div>
       </main>
 
