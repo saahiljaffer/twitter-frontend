@@ -16,7 +16,7 @@ export default function Search({ setLoading, setData, username, setUsername, dat
             value="Submit"
             onClick={() => {
                 setLoading(true);
-                fetch("http://localhost:8000/data/", { method: "POST", body: JSON.stringify({ username: username }) })
+                fetch("https://twittereng-django.herokuapp.com/data/", { method: "POST", body: JSON.stringify({ username: username }) })
                     .then((response) => response.json())
                     .then(setData)
                     .then(() => setLoading(false));
